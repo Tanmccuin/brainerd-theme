@@ -123,6 +123,7 @@ body {
 	background-color: var(--tmd-bg);
 	color: var(--tmd-body);
 	font-family: 'Inter', sans-serif;
+	line-height: 1.85;
 	transition: background-color var(--tmd-transition), color var(--tmd-transition);
 	margin: 0;
 }
@@ -226,6 +227,122 @@ a:hover { color: var(--tmd-accent-dark); }
 .brainerd-header__cta:hover {
 	background-color: var(--tmd-accent);
 	color: #fff;
+}
+
+/* ─── Mobile nav — hamburger + full-screen overlay ─────────────────────────── */
+.brainerd-header__toggle {
+	display: none;
+	position: relative;
+	z-index: 9999;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0.5rem;
+	color: var(--tmd-heading);
+	transition: color var(--tmd-transition);
+}
+.brainerd-header__toggle:hover { color: var(--tmd-accent); }
+.brainerd-header__toggle svg {
+	width: 24px;
+	height: 24px;
+	transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.brainerd-header__toggle:hover .brainerd-header__toggle-open {
+	transform: scaleX(0.8);
+	transform-origin: right;
+}
+.brainerd-header__toggle:hover .brainerd-header__toggle-close {
+	transform: rotate(90deg);
+}
+.brainerd-header__toggle-open { display: block; }
+.brainerd-header__toggle-close { display: none !important; }
+.brainerd-header__toggle[aria-expanded="true"] .brainerd-header__toggle-open { display: none !important; }
+.brainerd-header__toggle[aria-expanded="true"] .brainerd-header__toggle-close { display: block !important; }
+
+.brainerd-mobile-nav {
+	position: fixed;
+	inset: 0;
+	z-index: 9998;
+	background-color: var(--tmd-bg);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.brainerd-mobile-nav[data-open="true"] {
+	opacity: 1;
+	visibility: visible;
+}
+
+.brainerd-mobile-nav__links {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.25rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.brainerd-mobile-nav__links a {
+	font-family: 'Fraunces', serif;
+	font-weight: 700;
+	font-size: clamp(1.75rem, 5vw, 2.5rem);
+	color: var(--tmd-heading);
+	text-decoration: none;
+	padding: 0.4rem 0;
+	transition: color var(--tmd-transition);
+	display: block;
+}
+.brainerd-mobile-nav__links a:hover { color: var(--tmd-accent); }
+
+.brainerd-mobile-nav__cta {
+	margin-top: 2rem;
+	background: var(--tmd-accent);
+	color: #fff;
+	padding: 0.75rem 2rem;
+	border-radius: var(--tmd-radius-sm);
+	font-family: 'Inter', sans-serif;
+	font-size: 0.875rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: background-color var(--tmd-transition);
+}
+.brainerd-mobile-nav__cta:hover {
+	background: var(--tmd-accent-dark);
+	color: #fff;
+}
+
+.brainerd-mobile-nav__contact {
+	margin-top: 2.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.375rem;
+	font-size: 0.8125rem;
+	color: var(--tmd-muted);
+}
+.brainerd-mobile-nav__contact a {
+	color: var(--tmd-muted);
+	text-decoration: none;
+}
+.brainerd-mobile-nav__contact a:hover { color: var(--tmd-accent); }
+
+@media (max-width: 900px) {
+	.brainerd-header__nav,
+	.brainerd-header__cta {
+		display: none;
+	}
+	.brainerd-header__toggle {
+		display: block;
+	}
 }
 
 /* ─── Logo: dark variant default, inverted in dark mode ────────────────────── */
@@ -477,7 +594,7 @@ a:hover { color: var(--tmd-accent-dark); }
 }
 
 .tmd-dark .tmd-site-footer {
-	--footer-bg: #1a1612;
+	--footer-bg: #0b0b0d;
 	--footer-text: #edeae3;
 }
 
@@ -585,6 +702,41 @@ a:hover { color: var(--tmd-accent-dark); }
 	.tmd-site-footer__inner {
 		grid-template-columns: 1fr;
 		gap: 2rem;
+		padding-inline: 1.25rem;
+	}
+}
+
+/* ─── Mobile edge padding ──────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+	.wp-site-blocks {
+		padding-inline: 1.25rem !important;
+	}
+
+	.brainerd-header {
+		padding-inline: 1.25rem;
+	}
+
+	.cb-hero,
+	.cb-service-pillars,
+	.cb-portfolio-grid,
+	.cb-pricing-grid,
+	.cb-cta-band {
+		padding-inline: 1.25rem;
+	}
+
+	.tmd-site-footer__inner {
+		padding-inline: 1.25rem;
+	}
+
+	.cb-portfolio-single__header {
+		padding-inline: 1.25rem;
+	}
+
+	.cb-portfolio-single__gallery {
+		padding-inline: 1.25rem;
+	}
+
+	.cb-portfolio-single__closing {
 		padding-inline: 1.25rem;
 	}
 }

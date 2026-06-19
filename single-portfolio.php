@@ -23,8 +23,27 @@ get_header();
 			<a href="/contact/">Contact</a>
 		</nav>
 		<a class="brainerd-header__cta" href="/contact/">LET&#8217;S TALK</a>
+		<button class="brainerd-header__toggle" aria-expanded="false" aria-controls="brainerd-mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'brainerd' ); ?>">
+			<svg class="brainerd-header__toggle-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+			<svg class="brainerd-header__toggle-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+		</button>
 	</div>
 </header>
+
+<div class="brainerd-mobile-nav" id="brainerd-mobile-nav" role="dialog" aria-label="<?php esc_attr_e( 'Navigation menu', 'brainerd' ); ?>" aria-modal="true" data-open="false">
+	<nav class="brainerd-mobile-nav__links" aria-label="<?php esc_attr_e( 'Mobile navigation', 'brainerd' ); ?>">
+		<a href="/portfolio/">Portfolio</a>
+		<a href="/services/">Services &amp; Hosting</a>
+		<a href="/accessibility-and-why-it-matters/">Accessibility</a>
+		<a href="/about/">About</a>
+		<a href="/contact/">Contact</a>
+	</nav>
+	<a class="brainerd-mobile-nav__cta" href="/contact/">LET&#8217;S TALK</a>
+	<div class="brainerd-mobile-nav__contact">
+		<a href="tel:+18023554520">802.355.4520</a>
+		<a href="mailto:tanner@tannermooredesign.com">tanner@tannermooredesign.com</a>
+	</div>
+</div>
 
 <?php while ( have_posts() ) : the_post(); ?>
 

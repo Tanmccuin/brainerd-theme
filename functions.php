@@ -71,3 +71,64 @@ add_action( 'wp_body_open', function (): void {
 	</button>
 	<?php
 } );
+
+// Mobile nav — toggle, focus trap, Escape key, scroll lock.
+// Disabled if brainerd_companion_disabled_mobile_nav option is set (allows 3rd-party replacement).
+add_action( 'wp_footer', function (): void {
+	if ( get_option( 'brainerd_companion_disabled_mobile_nav' ) ) {
+		return;
+	}
+	?>
+	<script>
+	(function(){
+		var toggle = document.querySelector('.brainerd-header__toggle');
+		var overlay = document.getElementById('brainerd-mobile-nav');
+		if (!toggle || !overlay) return;
+
+		var focusable = overlay.querySelectorAll('a, button');
+		var firstFocus = focusable[0];
+		var lastFocus = focusable[focusable.length - 1];
+		var returnFocus = null;
+
+		function open() {
+			returnFocus = document.activeElement;
+			overlay.setAttribute('data-open', 'true');
+			toggle.setAttribute('aria-expanded', 'true');
+			document.body.style.overflow = 'hidden';
+			if (firstFocus) firstFocus.focus();
+		}
+
+		function close() {
+			overlay.setAttribute('data-open', 'false');
+			toggle.setAttribute('aria-expanded', 'false');
+			document.body.style.overflow = '';
+			if (returnFocus) returnFocus.focus();
+		}
+
+		function isOpen() {
+			return overlay.getAttribute('data-open') === 'true';
+		}
+
+		toggle.addEventListener('click', function() {
+			isOpen() ? close() : open();
+		});
+
+		overlay.querySelectorAll('a').forEach(function(link) {
+			link.addEventListener('click', close);
+		});
+
+		document.addEventListener('keydown', function(e) {
+			if (!isOpen()) return;
+			if (e.key === 'Escape') { close(); return; }
+			if (e.key === 'Tab') {
+				if (e.shiftKey) {
+					if (document.activeElement === firstFocus) { e.preventDefault(); lastFocus.focus(); }
+				} else {
+					if (document.activeElement === lastFocus) { e.preventDefault(); firstFocus.focus(); }
+				}
+			}
+		});
+	})();
+	</script>
+	<?php
+}, 99 );
