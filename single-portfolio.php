@@ -8,33 +8,21 @@
 
 get_header();
 
-$site_name = get_bloginfo( 'name' );
-$nav_items = wp_get_nav_menu_items( 'primary' );
 ?>
 <header class="brainerd-header" role="banner">
 	<div class="brainerd-header__inner">
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brainerd-header__logo" aria-label="<?php echo esc_attr( $site_name ); ?> — home">
-			<?php if ( has_custom_logo() ) : ?>
-				<?php
-				$logo_id  = get_theme_mod( 'custom_logo' );
-				$logo_url = wp_get_attachment_image_url( $logo_id, 'full' );
-				?>
-				<img src="<?php echo esc_url( $logo_url ); ?>"
-					alt="<?php echo esc_attr( $site_name ); ?>" width="240" height="36" decoding="async">
-			<?php else : ?>
-				<span class="brainerd-header__site-name"><?php echo esc_html( $site_name ); ?></span>
-			<?php endif; ?>
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brainerd-header__logo" aria-label="Tannermooredesign — home">
+			<img src="/wp-content/uploads/2021/07/tannermooredesign-dark-1024x152-1.png"
+				alt="Tannermooredesign" width="240" height="36" decoding="async">
 		</a>
 		<nav class="brainerd-header__nav" aria-label="<?php esc_attr_e( 'Primary navigation', 'brainerd' ); ?>">
-			<?php
-			if ( $nav_items ) {
-				foreach ( $nav_items as $item ) {
-					printf( '<a href="%s">%s</a>', esc_url( $item->url ), esc_html( $item->title ) );
-				}
-			}
-			?>
+			<a href="/portfolio/">Portfolio</a>
+			<a href="/services/">Services &amp; Hosting</a>
+			<a href="/accessibility-and-why-it-matters/">Accessibility</a>
+			<a href="/about/">About</a>
+			<a href="/contact/">Contact</a>
 		</nav>
-		<a class="brainerd-header__cta" href="/contact/"><?php esc_html_e( 'GET IN TOUCH', 'brainerd' ); ?></a>
+		<a class="brainerd-header__cta" href="/contact/">LET&#8217;S TALK</a>
 		<button class="brainerd-header__toggle" aria-expanded="false" aria-controls="brainerd-mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'brainerd' ); ?>">
 			<svg class="brainerd-header__toggle-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
 			<svg class="brainerd-header__toggle-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -44,15 +32,17 @@ $nav_items = wp_get_nav_menu_items( 'primary' );
 
 <div class="brainerd-mobile-nav" id="brainerd-mobile-nav" role="dialog" aria-label="<?php esc_attr_e( 'Navigation menu', 'brainerd' ); ?>" aria-modal="true" data-open="false">
 	<nav class="brainerd-mobile-nav__links" aria-label="<?php esc_attr_e( 'Mobile navigation', 'brainerd' ); ?>">
-		<?php
-		if ( $nav_items ) {
-			foreach ( $nav_items as $item ) {
-				printf( '<a href="%s">%s</a>', esc_url( $item->url ), esc_html( $item->title ) );
-			}
-		}
-		?>
+		<a href="/portfolio/">Portfolio</a>
+		<a href="/services/">Services &amp; Hosting</a>
+		<a href="/accessibility-and-why-it-matters/">Accessibility</a>
+		<a href="/about/">About</a>
+		<a href="/contact/">Contact</a>
 	</nav>
-	<a class="brainerd-mobile-nav__cta" href="/contact/"><?php esc_html_e( 'GET IN TOUCH', 'brainerd' ); ?></a>
+	<a class="brainerd-mobile-nav__cta" href="/contact/">LET&#8217;S TALK</a>
+	<div class="brainerd-mobile-nav__contact">
+		<a href="tel:+18023554520">802.355.4520</a>
+		<a href="mailto:tanner@tannermooredesign.com">tanner@tannermooredesign.com</a>
+	</div>
 </div>
 
 <?php while ( have_posts() ) : the_post(); ?>
@@ -146,5 +136,42 @@ $nav_items = wp_get_nav_menu_items( 'primary' );
 </article>
 
 <?php endwhile; ?>
+
+<footer class="tmd-site-footer" role="contentinfo">
+	<div class="tmd-site-footer__accent" aria-hidden="true"></div>
+	<div class="tmd-site-footer__inner">
+		<div class="tmd-site-footer__brand">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="tmd-site-footer__logo" aria-label="Tannermooredesign — home">
+				<img src="/wp-content/uploads/2021/07/tannermooredesign-dark-1024x152-1.png"
+					alt="Tannermooredesign" width="200" height="30" decoding="async" loading="lazy">
+			</a>
+			<p class="tmd-site-footer__tagline">Vermont WordPress Design, Development &amp; Consulting</p>
+			<p class="tmd-site-footer__copy">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Tannermooredesign // A Brainerd Street Picture Co.</p>
+		</div>
+		<div class="tmd-site-footer__col">
+			<p class="tmd-site-footer__col-label"><?php esc_html_e( 'Navigation', 'brainerd' ); ?></p>
+			<nav class="tmd-site-footer__nav" aria-label="<?php esc_attr_e( 'Footer navigation', 'brainerd' ); ?>">
+				<a href="/portfolio/">Portfolio</a>
+				<a href="/services/">Services &amp; Hosting</a>
+				<a href="/accessibility-and-why-it-matters/">Accessibility</a>
+				<a href="/about/">About</a>
+				<a href="/contact/">Contact</a>
+			</nav>
+		</div>
+		<div class="tmd-site-footer__col">
+			<p class="tmd-site-footer__col-label"><?php esc_html_e( 'Get in touch', 'brainerd' ); ?></p>
+			<div class="tmd-site-footer__contact">
+				<a href="tel:+18023554520" class="tmd-site-footer__contact-item">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+					802.355.4520
+				</a>
+				<a href="mailto:tanner@tannermooredesign.com" class="tmd-site-footer__contact-item">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+					tanner@tannermooredesign.com
+				</a>
+			</div>
+		</div>
+	</div>
+</footer>
 
 <?php get_footer(); ?>
