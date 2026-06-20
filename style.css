@@ -173,6 +173,15 @@ a:hover { color: var(--tmd-accent-dark); }
 }
 .tmd-dark .brainerd-header__logo img { filter: brightness(0) invert(1); }
 
+.brainerd-header__site-name,
+.tmd-site-footer__site-name {
+	font-family: 'Fraunces', serif;
+	font-weight: 700;
+	font-size: 1.25rem;
+	color: var(--tmd-heading);
+	letter-spacing: -0.01em;
+}
+
 /* Nav */
 .brainerd-header__nav {
 	display: flex;
@@ -602,7 +611,7 @@ a:hover { color: var(--tmd-accent-dark); }
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: url('/wp-content/uploads/2024/footer-staircase.png') center/cover no-repeat;
+	background: var(--tmd-footer-bg-image, none) center/cover no-repeat;
 	opacity: 0.06;
 	pointer-events: none;
 }
