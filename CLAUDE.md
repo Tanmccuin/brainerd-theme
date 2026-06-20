@@ -1,134 +1,164 @@
-# CLAUDE.md — Brainerd Theme
+# Brainerd Theme — AI Playbook
 
-This is an AI-first WordPress FSE theme. It is designed to be developed,
-extended, and maintained using Claude Code or similar AI coding assistants.
+You're working with Brainerd, an AI-first WordPress FSE theme. This document
+is your briefing — read it before writing any code or asking the user questions.
 
-## First-time setup — onboarding checklist
+## Your first conversation
 
-When starting a new site with Brainerd, gather these from the user before
-building anything:
+Don't run through a checklist. Have a conversation. The user may not have
+everything ready — that's normal and fine. Your job is to meet them where they
+are and fill gaps with sensible defaults.
 
-### 1. Site identity
-- **Site name** — update via `wp option update blogname "..."`
-- **Tagline** — update via `wp option update blogdescription "..."`
-- **Logo** — upload to Media Library, set as custom logo:
-  `wp option update custom_logo <attachment_id>`
-  Provide both a dark variant (for light backgrounds) and light variant
-  (for dark backgrounds) if dark mode is used.
+### Start here
+1. **What are we building?** Ask what kind of site this is. Portfolio? Service
+   business? Blog? Ecommerce? The answer shapes everything — which blocks to
+   use, which CPTs to register, which plugins to suggest.
 
-### 2. Brand / design tokens
-- **Primary color (accent)** — update `accent` in `theme.json` palette
-  and `--tmd-accent` in `style.css`
-- **Background color** — update `cream` in `theme.json` and `--tmd-bg`
-- **Heading font** — update `fontFamilies` in `theme.json` (default: Fraunces)
-- **Body font** — same (default: Inter)
-- **Dark mode?** — enabled by default. Disable by removing the toggle from
-  `functions.php` and the `.tmd-dark` rules from `style.css`
+2. **Check what's already installed.** Before asking about plugins, look:
+   ```bash
+   wp plugin list --status=active --fields=name,version
+   ```
+   If Brainerd Companion is active, check integration status:
+   ```bash
+   wp eval 'foreach(Brainerd\Integration_Registry::instance()->all() as $s=>$i) echo "$s: ".($i["detected"]?"active":"—")."\n";'
+   ```
 
-### 3. Pages & navigation
-- **What pages does the site need?** (Home, About, Services, Contact, Portfolio, etc.)
-- **Navigation order** — update `parts/header.html`, `parts/footer.html`,
-  and `single-portfolio.php` nav links
-- **CTA button text** — default "GET IN TOUCH", update in header/footer templates
+3. **Populate the config.** The Brainerd Companion has a config system for site
+   chrome (name, phone, email, nav, CTA). Fill it in as you learn things:
+   ```php
+   $config = Brainerd\Config::instance();
+   $config->set( 'phone', '555-0100', 'client-stated' );
+   $config->set( 'email', 'hello@example.com', 'client-stated' );
+   $config->save();
+   ```
+   Mark things the user told you as `client-stated`. Things you're guessing as
+   `inferred`. Ship defaults as `default`. Never treat `inferred` as final —
+   surface it back for confirmation.
 
-### 4. Contact information
-- **Email** — update in footer template and contact form handler
-- **Phone** — update in footer template
-- **Physical address** — if needed
+4. **Design tokens.** If they have a brand (logo, colors, fonts), update
+   `theme.json`. If they have a Figma file or design tokens export, read it and
+   map the values. If they have nothing yet, the defaults work — cream/coral
+   palette, Fraunces + Inter. Tell them it's easy to change later.
 
-### 5. Plugins
-Before building, scan for already-installed plugins:
+5. **Don't force completeness.** No logo yet? Use the text site name. No color
+   scheme? Use the defaults. No content? Use preview fallbacks. The theme is
+   designed to look good with placeholders — ship something the user can see
+   and iterate on, not a blank page waiting for content.
+
+## The ecosystem
+
+Three repos, each independent:
+
+| Package | What it is | Repo |
+|---------|-----------|------|
+| **Brainerd Theme** | FSE shell — templates, design tokens, dark mode, mobile nav | `wp-content/themes/brainerd/` |
+| **Brainerd Blocks** | ACF Gutenberg blocks — 12 ready-to-use components | `wp-content/plugins/brainerd-blocks/` |
+| **Brainerd Companion** | Config system, plugin detection, integration manager | `wp-content/plugins/brainerd-companion/` |
+
+## How to build things
+
+### Adding a page
+Pages are assembled from block markup in post_content. Use the blocks:
+```
+<!-- wp:brainerd/hero {"data":{"heading":"..."}} /-->
+<!-- wp:brainerd/service-pillars {"data":{...}} /-->
+<!-- wp:brainerd/cta-band {"data":{...}} /-->
+```
+For editorial content, use core WordPress blocks (paragraphs, headings,
+columns, lists, images).
+
+### Adding a block
+Copy any folder in `brainerd-blocks/blocks/` as a starting point. Read
+`SYSTEM.md` in the blocks plugin for naming conventions, token usage, and
+the accessibility checklist. A block = `block.json` + `render.php` + `style.css`
++ ACF JSON. The plugin auto-registers it.
+
+### Adding a CPT
+Create `mu-plugins/snippets/cpt-<name>.php`. Use `register_post_type()`.
+If it needs ACF fields, add a group JSON in `brainerd-blocks/acf-json/`.
+
+### Adding a plugin integration
+Drop a PHP file in `brainerd-companion/integrations/`. See `INTEGRATIONS.md`
+in the companion plugin. CSS overrides go in `integrations/css/` and should
+use `--tmd-*` tokens.
+
+## Design system (read SYSTEM.md for the full reference)
+
+- **Colors:** `--tmd-bg`, `--tmd-surf`, `--tmd-heading`, `--tmd-body`,
+  `--tmd-accent`, `--tmd-border`, `--tmd-muted` — all swap in dark mode
+- **Fonts:** Fraunces (headings, 700), Inter (body, 400/500)
+- **Spacing:** `--wp--preset--spacing--40` through `--80`
+- **Radii:** `--tmd-radius-sm` (4px), `--tmd-radius-md` (8px), `--tmd-radius-lg` (10px)
+- **Classes:** BEM — `cb-<block>`, `cb-<block>__<element>`
+- **ACF keys:** `field_cb_<abbrev>_<field>`, group `group_cb_<abbrev>`
+
+## Available blocks (12)
+
+| Block | Slug | Good for |
+|-------|------|----------|
+| Hero | `brainerd/hero` | Page headers, mosaic + parallax |
+| Service Pillars | `brainerd/service-pillars` | Icon + text cards |
+| Portfolio Grid | `brainerd/portfolio-grid` | CPT query grid |
+| Pricing Grid | `brainerd/pricing-grid` | Tier cards |
+| CTA Band | `brainerd/cta-band` | Closing call to action |
+| Contact Form | `brainerd/contact-form` | Simple HTML form |
+| Testimonials | `brainerd/testimonials` | Quote cards |
+| FAQ Accordion | `brainerd/faq-accordion` | Expandable Q&A |
+| Stats | `brainerd/stats` | Metric cards |
+| Logo Cloud | `brainerd/logo-cloud` | Client/partner logos |
+| Team Grid | `brainerd/team-grid` | Team member cards |
+| Feature List | `brainerd/feature-list` | Process steps, features |
+
+## Rules
+
+### Never do these (human-only)
+- Enter ACF Pro license keys or any credentials
+- Deploy to production, configure DNS or hosting
+- Enter payment/API keys or SMTP credentials
+
+### Always do these
+- **Escape all output:** `esc_html`, `esc_url`, `esc_attr`, `wp_kses_post`
+- **Semantic HTML:** `<nav>`, `<main>`, `<section>`, `<button>` — not divs
+- **ARIA attributes** on interactive elements
+- **Visible focus states** (inherited from theme)
+- **`prefers-reduced-motion`** respected for any animation
+- **WCAG AA contrast** minimum — check with `Brainerd\Config::check_contrast()`
+- **Use tokens** — never hardcode colors, spacing, or font values
+
+### Suggesting plugins
+Prefer well-maintained plugins over custom code for: forms (Gravity Forms),
+SEO (Rank Math), caching (WP Rocket), images (ShortPixel), SMTP (FluentSMTP),
+security (Wordfence). Build custom only when simple, site-specific, or no
+good plugin exists.
+
+## Config system
+
+The Brainerd Companion stores site chrome in `wp_options` via a config API:
+
+```php
+// Read
+brainerd_config( 'phone' )
+brainerd_config( 'cta_text', 'GET IN TOUCH' )
+
+// Write (with provenance)
+$config = Brainerd\Config::instance();
+$config->set( 'phone', '555-0100', 'client-stated', 'conversation:' );
+$config->save();
+
+// Register a custom field
+$config->register( 'business_hours', [
+    'label'   => 'Business Hours',
+    'type'    => 'text',
+    'section' => 'extended',
+    'group'   => 'contact',
+] );
+```
+
+Users can also edit config values in WP Admin → Brainerd → Site Config.
+
+## Running things
 ```bash
-wp plugin list --status=active --fields=name,version
+ddev start                           # Start the environment
+ddev wp <command>                    # WP-CLI (WP is in wp/ subdirectory)
+ddev exec bash scripts/build-site.sh # Rebuild from code
 ```
-
-Common plugins to ask about:
-- **Forms:** Gravity Forms, WPForms, Contact Form 7
-- **SEO:** Rank Math, Yoast
-- **Ecommerce:** WooCommerce, Shopify (headless)
-- **SMTP:** FluentSMTP, WP Mail SMTP, Post SMTP
-- **Caching:** WP Rocket, W3 Total Cache
-- **Security:** Wordfence, Sucuri
-
-If Brainerd Companion is active, integrations auto-detect. Check status:
-```bash
-wp eval 'foreach(Brainerd\Integration_Registry::instance()->all() as $s=>$i) echo "$s: ".($i["detected"]?"active":"not found")."\n";'
-```
-
-### 6. Custom post types
-- **Portfolio?** — already included in `mu-plugins/snippets/cpt-portfolio.php`
-- **Other CPTs?** — create in `mu-plugins/snippets/cpt-<name>.php`
-- **ACF fields for CPTs?** — create in `brainerd-blocks/acf-json/`
-
-## Stack
-- **Theme:** `brainerd` (FSE, no parent theme)
-- **Blocks:** `brainerd-blocks` plugin (ACF Pro required)
-- **Integrations:** `brainerd-companion` plugin (optional)
-- **Snippets:** `mu-plugins/snippets/` (CPTs, form handlers, etc.)
-
-## How to run things
-- Start DDEV: `ddev start`
-- WP-CLI: `ddev wp <cmd>` (WP installs to `wp/`, scripts use `--path=wp`)
-- Build/assemble: `ddev exec bash scripts/build-site.sh`
-
-## Adding a block
-Create a folder in `brainerd-blocks/blocks/`:
-
-```
-blocks/my-block/
-  block.json       # apiVersion 3, name: brainerd/my-block, category: brainerd
-  render.php       # PHP render — get_field() + escaping
-  style.css        # Scoped styles using --tmd-* / --wp--preset--* tokens
-```
-
-Add ACF field group: `acf-json/group_cb_my_block.json`
-
-The plugin auto-registers any folder with a `block.json`. No plugin code edits.
-
-## Conventions
-- **Escaping:** `esc_html` / `esc_url` / `esc_attr`; rich text via `wp_kses_post`
-- **Class names:** `cb-<block>`, `cb-<block>__<element>` (BEM)
-- **Field keys:** `field_cb_<block>_<field>`, group key `group_cb_<block>`
-- **Text domain:** `brainerd`
-- **No inline styles** except dynamic values from fields
-- **Accessibility:** semantic HTML, ARIA attributes, visible focus states,
-  `prefers-reduced-motion` respected, WCAG AA minimum contrast
-
-## Design tokens
-Two layers:
-1. `theme.json` presets — `--wp--preset--color--accent`, `--wp--preset--font-family--fraunces`, etc.
-2. `style.css` custom properties — `--tmd-bg`, `--tmd-accent`, `--tmd-border`, etc.
-
-Change `theme.json` for the design system. The `--tmd-*` properties reference
-these and add dark mode + transition support.
-
-## Template structure
-```
-templates/
-  index.html              # Fallback
-  page.html               # Static pages
-  single.html             # Blog posts
-  archive-portfolio.html  # Portfolio archive (uses brainerd/portfolio-grid block)
-  404.html                # Not found
-parts/
-  header.html             # Site header + mobile nav
-  footer.html             # Site footer
-single-portfolio.php      # Portfolio CPT single (PHP for gallery logic)
-```
-
-## Manual steps (human only)
-- **ACF Pro install/license** — drop plugin into `wp-content/plugins/`
-- **SMTP credentials** — configure via FluentSMTP or similar
-- **Production deploy, DNS, hosting**
-- **Payment/API keys** — never enter credentials via AI
-
-## Suggesting plugins
-When building features, prefer well-maintained plugins over custom code for:
-- Forms (Gravity Forms)
-- SEO (Rank Math)
-- Caching (WP Rocket)
-- Image optimization (ShortPixel, Imagify)
-- SMTP (FluentSMTP)
-- Security (Wordfence)
-
-Build custom only when the feature is simple, site-specific, or no good plugin exists.
