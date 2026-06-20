@@ -1,0 +1,53 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"default"}} -->
+<main class="wp-block-group">
+
+<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--60)">
+<!-- wp:query-title {"type":"archive","className":"cb-archive__title"} /-->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:query {"queryId":4,"query":{"perPage":12,"offset":0,"postType":"project","order":"desc","orderBy":"date","inherit":true},"align":"wide","layout":{"type":"default"}} -->
+
+<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"left":"var:preset|spacing|60","right":"var:preset|spacing|60","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignwide" style="padding-left:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--70)">
+
+<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+
+<!-- wp:group {"className":"cb-post-grid-card","style":{"border":{"radius":"10px","width":"1px","color":"var:preset|color|border"}},"layout":{"type":"default"}} -->
+<div class="wp-block-group cb-post-grid-card" style="border-color:var(--wp--preset--color--border);border-width:1px;border-radius:10px">
+<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/9","style":{"border":{"radius":{"topLeft":"10px","topRight":"10px"}}},"className":"cb-post-grid-card__thumb"} /-->
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"1rem","right":"1.25rem","bottom":"1.25rem","left":"1.25rem"}}},"layout":{"type":"default"}} -->
+<div class="wp-block-group" style="padding-top:1rem;padding-right:1.25rem;padding-bottom:1.25rem;padding-left:1.25rem">
+<!-- wp:post-title {"level":3,"isLink":true,"fontSize":"md","className":"cb-post-grid-card__title"} /-->
+<!-- wp:post-excerpt {"moreText":"","excerptLength":15,"className":"cb-post-grid-card__excerpt","fontSize":"sm"} /-->
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+
+<!-- /wp:post-template -->
+
+<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"className":"cb-pagination"} -->
+<!-- wp:query-pagination-previous /-->
+<!-- wp:query-pagination-numbers /-->
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination -->
+
+<!-- wp:query-no-results -->
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center">No projects found.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:query-no-results -->
+
+</div>
+<!-- /wp:group -->
+
+<!-- /wp:query -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer"} /-->

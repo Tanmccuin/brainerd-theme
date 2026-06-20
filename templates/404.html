@@ -3,13 +3,33 @@
 <!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"layout":{"type":"constrained"}} -->
 <main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)">
 
-<!-- wp:heading {"textAlign":"center","level":1} -->
-<h1 class="wp-block-heading has-text-align-center">Page not found</h1>
+<!-- wp:group {"className":"cb-404","layout":{"type":"default"}} -->
+<div class="wp-block-group cb-404">
+
+<!-- wp:heading {"textAlign":"center","level":1,"className":"cb-404__code","fontSize":"display"} -->
+<h1 class="wp-block-heading has-text-align-center cb-404__code has-display-font-size">404</h1>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"textAlign":"center","level":2,"fontSize":"xl"} -->
+<h2 class="wp-block-heading has-text-align-center has-xl-font-size">Page not found</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center"} -->
-<p class="has-text-align-center">The page you're looking for doesn't exist. <a href="/">Head back home</a>.</p>
+<p class="has-text-align-center">The page you&#39;re looking for doesn&#39;t exist, or has been moved.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Try searching...","buttonText":"Search","buttonUseIcon":true,"width":60,"widthUnit":"%","align":"center","className":"cb-404__search"} /-->
+
+<!-- wp:group {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--50)">
+<!-- wp:paragraph -->
+<p><a href="/">← Back to home</a></p>
+<!-- /wp:paragraph -->
+</div>
+<!-- /wp:group -->
+
+</div>
+<!-- /wp:group -->
 
 </main>
 <!-- /wp:group -->
