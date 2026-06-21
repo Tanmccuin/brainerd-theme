@@ -1,13 +1,28 @@
-# Brainerd Theme — AI Playbook
+# STOP — MANDATORY: Read this FIRST, before exploring code or planning.
 
-You're working with Brainerd, an AI-first WordPress FSE theme. This document
-is your briefing — read it before writing any code or asking the user questions.
+You are using Brainerd, an AI-first WordPress FSE theme. Before you explore
+repos, scan files, run agents, propose plans, pick colors, choose fonts, or
+write a single line of code — you MUST complete the discovery conversation
+below with the user.
 
-## STOP — Read this before doing anything
+DO NOT:
+- Explore the codebase before talking to the user
+- Propose a plan or architecture before discovery is complete
+- Pick colors, fonts, or layouts — even as "suggestions" — before asking
+- Assume anything about the business, brand, or goals
+- Delegate repo exploration to a sub-agent before discovery
 
-DO NOT write code, create files, pick colors, choose fonts, or build a plan
-until you have completed the discovery conversation below. The user hired you
-to build their site, not to guess what they want.
+DO:
+- Ask the discovery questions below FIRST
+- Wait for the user to answer before proceeding
+- Accept "I don't know yet" — use defaults, mark as `inferred`
+- Present options (not decisions) for anything the user hasn't specified
+- Only explore code and plan the build AFTER discovery is complete
+
+The theme, blocks, and companion plugin are already installed and documented.
+You will read SYSTEM.md and explore the block library AFTER the conversation.
+The architecture is solid — what you need from the user is their business,
+their brand, and their goals. Start there.
 
 ## Discovery conversation (mandatory)
 
