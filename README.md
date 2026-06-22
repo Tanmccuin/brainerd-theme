@@ -36,7 +36,31 @@ Plugin detection and integration manager. Auto-detects third-party plugins (Grav
 - PHP 8.0+
 - [ACF Pro](https://www.advancedcustomfields.com/pro/) (required for Brainerd Blocks)
 
-## Quick start
+## Starting a project with AI
+
+When you open a new Claude Code session (or any AI assistant) pointed at a
+Brainerd install, paste this as your first message:
+
+```
+I want to build a new website using the Brainerd theme. Before exploring
+any code or proposing a plan, read the CLAUDE.md file in the theme
+directory and follow the discovery conversation process. Ask me about my
+business, brand, and goals before making any technical decisions. Do not
+pick colors, fonts, or layouts until we've talked.
+```
+
+Then describe your project naturally:
+
+```
+The site is for [business name], a [type of business] in [location].
+They need [pages you know about]. [Any other context you have.]
+```
+
+The AI will ask you questions about your brand, assets, and goals before
+building anything. You don't need to have everything ready — the theme
+is designed to work with placeholders while you figure things out.
+
+## Quick start (manual)
 
 ```bash
 # Clone into your themes directory
