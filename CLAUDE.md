@@ -125,6 +125,18 @@ use `--tmd-*` tokens.
 - **WCAG AA contrast** minimum — check with `Brainerd\Config::check_contrast()`
 - **Use tokens** — never hardcode colors, spacing, or font values
 
+### Human editability (critical)
+Every block you build MUST be editable by a non-technical user in the WordPress
+editor without AI help. You build it; they maintain it.
+- Every visible text → ACF field (not hardcoded in render.php)
+- Every image → ACF image/gallery field or featured image
+- Every link → ACF link field (not hardcoded URL)
+- Icons → select field with dropdown (not raw SVG in content)
+- Use InnerBlocks (`jsx: true`) for flexible content areas
+- Use conditional logic to hide irrelevant fields
+- Use `mode: auto` so blocks preview visually but click to edit
+- Read SYSTEM.md "Human editability" section for the full checklist
+
 ### Suggesting plugins
 Prefer well-maintained plugins over custom code for: forms (Gravity Forms),
 SEO (Rank Math), caching (WP Rocket), images (ShortPixel), SMTP (FluentSMTP),
