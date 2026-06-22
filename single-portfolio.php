@@ -87,34 +87,51 @@ get_header();
 	</div>
 
 	<?php
-	$thumb_id   = get_post_thumbnail_id();
-	$all_images = get_posts( [
-		'post_type'      => 'attachment',
-		'post_mime_type' => 'image',
-		'posts_per_page' => -1,
-		'post_parent'    => get_the_ID(),
-		'orderby'        => 'menu_order',
-		'order'          => 'ASC',
-		'exclude'        => $thumb_id ? [ $thumb_id ] : [],
-	] );
+	// ACF gallery field (preferred — manageable in the editor).
+	$acf_gallery = get_field( 'gallery' );
 
-	if ( $all_images ) :
+	// Fallback: attached media (legacy, for imported portfolio entries).
+	if ( ! $acf_gallery ) {
+		$thumb_id     = get_post_thumbnail_id();
+		$attachments  = get_posts( [
+			'post_type'      => 'attachment',
+			'post_mime_type' => 'image',
+			'posts_per_page' => -1,
+			'post_parent'    => get_the_ID(),
+			'orderby'        => 'menu_order',
+			'order'          => 'ASC',
+			'exclude'        => $thumb_id ? [ $thumb_id ] : [],
+		] );
+		if ( $attachments ) {
+			$acf_gallery = array_map( function ( $att ) {
+				$src = wp_get_attachment_image_src( $att->ID, 'large' );
+				return [
+					'ID'     => $att->ID,
+					'url'    => $src[0] ?? '',
+					'width'  => $src[1] ?? 0,
+					'height' => $src[2] ?? 0,
+					'alt'    => get_post_meta( $att->ID, '_wp_attachment_image_alt', true ),
+				];
+			}, $attachments );
+		}
+	}
+
+	if ( $acf_gallery ) :
 	?>
 		<div class="cb-portfolio-single__gallery" aria-label="<?php esc_attr_e( 'Project screenshots', 'brainerd' ); ?>">
-			<?php foreach ( $all_images as $index => $img ) :
-				$src    = wp_get_attachment_image_src( $img->ID, 'large' );
-				$alt    = get_post_meta( $img->ID, '_wp_attachment_image_alt', true ) ?: get_the_title() . ' — screenshot ' . ( $index + 1 );
-				$meta   = wp_get_attachment_metadata( $img->ID );
-				$w      = $meta['width'] ?? 1;
-				$h      = $meta['height'] ?? 1;
+			<?php foreach ( $acf_gallery as $index => $img ) :
+				$src    = $img['sizes']['large'] ?? $img['url'] ?? '';
+				$alt    = $img['alt'] ?: get_the_title() . ' — screenshot ' . ( $index + 1 );
+				$w      = $img['sizes']['large-width'] ?? $img['width'] ?? 1;
+				$h      = $img['sizes']['large-height'] ?? $img['height'] ?? 1;
 				$is_tall = ( $h / $w ) > 1.2;
 			?>
 				<figure class="cb-portfolio-single__gallery-item<?php echo $is_tall ? ' cb-portfolio-single__gallery-item--tall' : ''; ?>">
 					<img
-						src="<?php echo esc_url( $src[0] ); ?>"
+						src="<?php echo esc_url( $src ); ?>"
 						alt="<?php echo esc_attr( $alt ); ?>"
-						width="<?php echo esc_attr( $src[1] ); ?>"
-						height="<?php echo esc_attr( $src[2] ); ?>"
+						width="<?php echo esc_attr( $w ); ?>"
+						height="<?php echo esc_attr( $h ); ?>"
 						loading="lazy"
 						decoding="async">
 				</figure>
